@@ -1,0 +1,19 @@
+name: Build
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install SFML
+        run: sudo apt install libsfml-dev
+
+      - name: Check codestyle
+        run: git ls-files *.{cpp,h} | xargs clang-format -i && git diff --exit-code
+
+      - name: Build app
+        run: make && make test && ./bin/tag-test
